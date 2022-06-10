@@ -33,21 +33,25 @@ jobs:
         run: |
           cz check --rev-range ${{ github.event.pull_request.head.sha }}..HEAD
 
+      - name: Show bump
+        run: |
+          cz bump --yes --dry-run
+
   default:
     name: "${{ matrix.step.env }} '${{ matrix.step.command }}' (@py${{ matrix.step.python }})"
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         step: [
           {env: "pytest", python: "3.7", extras: "", command: "pytest tests/"},
           {env: "pytest", python: "3.8", extras: "", command: "pytest tests/"},
           {env: "pytest", python: "3.9", extras: "", command: "pytest tests/"},
           {env: "pytest", python: "3.10", extras: "", command: "pytest tests/"},
-          {env: "main", python: "3.9", extras: "", command: "flakeheaven lint"},
-          {env: "typing", python: "3.9", extras: "", command: "mypy --ignore-missing-imports --allow-redefinition src/flake8_boolean_trap.py > /dev/null || yes | mypy --install-types && mypy --ignore-missing-imports --allow-redefinition src/flake8_boolean_trap.py"},
+          {env: "main", python: "3.9", extras: "", command: "flakeheaven missed && flakeheaven lint"},
+          {env: "typing", python: "3.9", extras: "", command: "mypy --strict --ignore-missing-imports --allow-redefinition src/flake8_boolean_trap.py > /dev/null || yes | mypy --install-types && mypy --ignore-missing-imports --allow-redefinition --strict src/flake8_boolean_trap.py"},
           # additional
-          {env: "docs", python: "3.9", extras: "-E docs", command: "./scripts/docs-build"},
-          {env: "isort", python: "3.9", extras: "", command: "isort --check flake8_boolean_trap"},
+          {env: "docs", python: "3.9", extras: "", command: "./scripts/docs-build"},
         ]
     container:
       image: python:${{ matrix.step.python }}-bullseye

@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "flake8_boolean_trap"
-version = "0.1.0"
+version = "0.0.0"
 description = "flake8 plugin which forbids boolean positional arguments"
-authors = ["Pablo Woolvett <pablowoolvett@gmail.com>"]
+authors = ["Pablo Woolvett <github@devx.pw>"]
 packages = [
     { include = "flake8_boolean_trap.py", from = "src" },
 ]
@@ -47,6 +47,16 @@ furo = "^2022.6.4"
 
 [tool.poetry.plugins."flake8.extension"]
 FBT = "flake8_boolean_trap:Plugin"
+
+[tool.commitizen]
+version = "0.0.0"
+annotated_tag = true
+update_changelog_on_bump = true
+name = "cz_conventional_commits"
+tag_format = "$version"
+# keep this in sync with the bump workflow to avoid
+# re-triggering it after commitizen bump command pushes
+bump_message = "bump: $current_version → $new_version"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

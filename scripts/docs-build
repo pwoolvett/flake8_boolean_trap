@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# this should be equivalent to readthedocs build
+rm -rf docs/_build
+pushd docs/
+
+python -m sphinx \
+  -T \
+  -E \
+  -W \
+  --keep-going \
+  -b html \
+  -d _build/doctrees \
+  -D language=en \
+  . \
+  _build/html
+
+
+popd
