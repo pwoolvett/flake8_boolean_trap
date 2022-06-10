@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+rm -rf docs/build/_static || echo "no static files"
+rm -rf docs/src/apidoc || echo "no apidoc files"
+
+sphinx-build docs/src docs/build $@

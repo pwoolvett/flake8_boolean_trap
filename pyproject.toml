@@ -1,0 +1,53 @@
+[tool.poetry]
+name = "flake8_boolean_trap"
+version = "0.1.0"
+description = "flake8 plugin which forbids boolean positional arguments"
+authors = ["Pablo Woolvett <pablowoolvett@gmail.com>"]
+packages = [
+    { include = "flake8_boolean_trap.py", from = "src" },
+]
+readme = "README.md"
+homepage = "https://pwoolvett.github.io/flake8_boolean_trap"
+repository = "https://github.com/pwoolvett/flake8_boolean_trap"
+license = "UNLICENSE"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Environment :: Console",
+    "Framework :: Flake8",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+flake8 = "^4.0.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+astpretty = "^3.0.0"
+black = "^22.3.0"
+mypy = "^0.961"
+flakeheaven = "^1.0.1"
+docs = "^0.1.0"
+isort = "^5.10.1"
+Sphinx = "^5.0.1"
+myst-parser = "^0.18.0"
+sphinx-copybutton = "^0.5.0"
+sphinx-inline-tabs = "^2022.1.2-beta.11"
+furo = "^2022.6.4"
+
+
+[tool.poetry.plugins."flake8.extension"]
+FBT = "flake8_boolean_trap:Plugin"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

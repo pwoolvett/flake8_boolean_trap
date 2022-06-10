@@ -1,0 +1,67 @@
+#.github/workflows/ci.yaml
+name: CI
+on:
+  pull_request:
+    branches:
+      - master
+
+env:
+  POETRY_VIRTUALENVS_CREATE: "true"
+  POETRY_VIRTUALENVS_IN_PROJECT: "true"
+
+jobs:
+
+  conventional-commits:
+    name: "Enforce Conventional Commits compliance"
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install commitizen
+        run: |
+          pip install -U commitizen==2.27.0
+
+      - name: Validate all PR commits since origin/master
+        run: |
+          cz check --rev-range origin/master..HEAD
+
+      - name: Validate all PR commits since PR head
+        run: |
+          cz check --rev-range ${{ github.event.pull_request.head.sha }}..HEAD
+
+  default:
+    name: "${{ matrix.step.env }} '${{ matrix.step.command }}' (@py${{ matrix.step.python }})"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        step: [
+          {env: "pytest", python: "3.7", extras: "", command: "pytest tests/"},
+          {env: "pytest", python: "3.8", extras: "", command: "pytest tests/"},
+          {env: "pytest", python: "3.9", extras: "", command: "pytest tests/"},
+          {env: "pytest", python: "3.10", extras: "", command: "pytest tests/"},
+          {env: "main", python: "3.9", extras: "", command: "flakeheaven lint"},
+          {env: "typing", python: "3.9", extras: "", command: "mypy --ignore-missing-imports --allow-redefinition src/flake8_boolean_trap.py > /dev/null || yes | mypy --install-types && mypy --ignore-missing-imports --allow-redefinition src/flake8_boolean_trap.py"},
+          # additional
+          {env: "docs", python: "3.9", extras: "-E docs", command: "./scripts/docs-build"},
+          {env: "isort", python: "3.9", extras: "", command: "isort --check flake8_boolean_trap"},
+        ]
+    container:
+      image: python:${{ matrix.step.python }}-bullseye
+      env:
+        COVERAGE_FILE: ".coverage.${{ matrix.step.env }}.${{ matrix.step.python }}"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Install poetry
+        run: pip install poetry
+      - name: Install with deps
+        run: |
+          poetry install ${{ matrix.step.extras }}
+      - name: Run command
+        run: |
+          . ./.venv/bin/activate  # use venv created by poetry
+          ${{ matrix.step.command }}
