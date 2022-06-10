@@ -30,6 +30,14 @@ def function(
     kwonly_nonboolvalued_nonboolhint: int = 1,
     kwonly_nonboolvalued_boolhint: bool = 1,
     kwonly_nonboolvalued_boolstrhint: "bool" = 1,
-    **kw
+    **kw,
 ):
     ...
+
+
+def used(do):
+    return do
+
+
+def b():
+    used(True)

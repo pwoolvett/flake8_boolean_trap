@@ -31,7 +31,7 @@ python = "^3.8"
 flake8 = "^4.0.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = ">=6.2.5"
 astpretty = "^3.0.0"
 black = "^22.3.0"
 mypy = "^0.961"
@@ -42,10 +42,134 @@ myst-parser = "^0.18.0"
 sphinx-copybutton = "^0.5.0"
 sphinx-inline-tabs = "^2022.1.2-beta.11"
 furo = "^2022.6.4"
+flake8-isort = "^4.1.1"
+flake8-bandit = "^3.0.0"
+flake8-bugbear = "^22.4.25"
+flake8-builtins = "^1.5.3"
+flake8-comprehensions = "^3.10.0"
+flake8-docstrings = "^1.6.0"
+flake8-eradicate = "^1.2.1"
+flake8-debugger = "^4.1.2"
+flake8-mutable = "^1.2.0"
+flake8-pytest-style = "^1.6.0"
+pep8-naming = "^0.13.0"
+darglint = "^1.8.1"
+flake8-black = "^0.3.3"
+pylint = "^2.14.1"
 
 
 [tool.poetry.plugins."flake8.extension"]
 FBT = "flake8_boolean_trap:Plugin"
+
+[tool.isort]
+profile = "black"
+force_single_line = true
+src_paths = ["src"]
+known_local_folder = ["test"]
+atomic = true
+
+[tool.flakeheaven]
+format = "colored"
+max_line_length = 79
+exclude = [
+  # self-managed files should not be checked
+  "poetry.lock",
+  "./.venv",
+  "tests/checkme.py",  # used for testing
+]
+docstring-convention = "google"  # flake8-docstrings
+docstring_style = "google"  # darglint
+
+[tool.flakeheaven.plugins]
+flake8-boolean-trap = ["+*"]
+flake8-isort = ["+*"]
+flake8-black = ["+*"]
+flake8-bandit = [
+  "+*",
+  "-S322",  # input for python2, no problem
+  "-S404",  # control should be performed on subprocess usage, on import is useless
+]
+flake8-bugbear = ["+*"]
+flake8-builtins = ["+*"]
+flake8-comprehensions = ["+*"]
+flake8-darglint = ["+*"]
+flake8-docstrings = [
+  "+*",
+  "-D101",  # pylint dupe
+  "-D103",  # pylint dupe
+  "-D202",  # black conflict
+  "-D412",  # we do want lines between header and contents. See https://github.com/PyCQA/pydocstyle/issues/412
+]
+flake8-eradicate = ["+*"]
+flake8-debugger = ["+*"]
+flake8-mutable = ["+*"]
+flake8-pytest-style = ["+*"]
+mccabe = ["+*"]
+pep8-naming = [
+  "+*",
+  "-N805",  # pylint duplicate
+  "-N801",  # pylint dupe
+]
+pycodestyle = [
+  "+*",
+  "-E501",  # pylint duplicate
+  "-E203",  # false positives on list slice
+  "-E722",  # bugbear duplicate
+  "-E402",  # isort duplicate
+  "-W503",  # black conflict, looks ok
+]
+pyflakes = [
+  "+*",
+  "-F821",  # pylint dupe
+]
+pylint = [
+  "+*",
+  "-E1136",  # disabled for python3.9, at least until support for 3.9 lands. See https://github.com/PyCQA/pylint/issues/3882
+  "-C0114",  # flake8-docstrings duplicate
+  "-W0611",  # pyflakes duplicate
+  "-C0103",  # N802 dupe
+  "-C0412",  # isort conflict
+]
+
+[tool.flakeheaven.exceptions."docs/conf.py"]
+flake8-eradicate = [
+  "-E800",
+]
+flake8-docstrings = [
+  "-D100",
+  "-D101",
+  "-D102",
+  "-D103",
+  "-D104",
+]
+flake8-builtins = [
+  "-A001", # variable "copyright" is shadowing a python builtin -> sphinx wants it
+]
+pylint = [
+  "-*",  # completely disable pylint for sphinx config
+]
+[tool.flakeheaven.exceptions."tests/"]
+flake8-docstrings = [
+  "-D100",
+  "-D101",
+  "-D102",
+  "-D103",
+  "-D104",
+]
+flake8-bandit = [
+  "-S101",  # asserts are ok
+]
+flake8-darglint = [
+  "-DAR101",
+]
+pylint = [
+  "-C0415",
+  "-C0115",
+  "-C0115",
+  "-C0116",
+  "-C0116",
+  "-R0201",
+]
 
 [tool.commitizen]
 version = "0.0.0"
