@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flake8_boolean_trap"
-version = "0.0.0"
+version = "0.1.0"
 description = "flake8 plugin which forbids boolean positional arguments"
 authors = ["Pablo Woolvett <github@devx.pw>"]
 packages = [
@@ -172,7 +172,7 @@ pylint = [
 ]
 
 [tool.commitizen]
-version = "0.0.0"
+version = "0.1.0"
 annotated_tag = true
 update_changelog_on_bump = true
 name = "cz_conventional_commits"
