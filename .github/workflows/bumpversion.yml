@@ -39,7 +39,7 @@ jobs:
           python3 -m pip install \
             --user \
             commitizen==2.27.1 \
-            poetry==1.1.4
+            poetry
 
       - name: "Bump: commit and tag"
         run: |
