@@ -71,6 +71,11 @@ EXPECTED: RegistryPerLine = {
     43: {
         BooleanTrapReason.FUNCTION_CALL.value.format(position=0, func="used"),
     },
+    57: {
+        BooleanTrapReason.TYPE_HINT.value.format(
+            arg="value", func="non_setter"
+        )
+    },
 }
 
 

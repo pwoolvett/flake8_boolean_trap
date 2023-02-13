@@ -117,6 +117,24 @@ def default_values(func_node: ast.FunctionDef) -> CandidateGen:
         yield default, default.lineno, default.col_offset, arg.arg
 
 
+def is_property_setter(func_node: ast.FunctionDef) -> bool:
+    """Detect whether a function node is a property setter.
+
+    Args:
+        func_node: The functions ast to check its decorations. If any is
+            a property setter, returns `True`. Otherwise, returns `False`.
+
+    Returns:
+        True if the function corresponds to a property setter.
+    """
+    for decorator in func_node.decorator_list:
+        if not isinstance(decorator, ast.Attribute):
+            continue
+        if decorator.attr == "setter":
+            return True
+    return False
+
+
 def is_boolean_default(default: ast.expr) -> bool:
     """Detect whether a default argument value is a boolean.
 
@@ -153,6 +171,8 @@ class Visitor(ast.NodeVisitor):
 
         """
         for hint, lineno, col, argname in positional_hints(func_node):
+            if is_property_setter(func_node):
+                continue
             if is_boolean_typehint(hint):
                 self.registry.append(
                     (lineno, col, argname, func_node.name, BooleanTrapReason.TYPE_HINT)
