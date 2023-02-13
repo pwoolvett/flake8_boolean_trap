@@ -63,6 +63,7 @@ jobs:
         run: pip install poetry
       - name: Install with deps
         run: |
+          poetry config virtualenvs.create false
           poetry install ${{ matrix.step.extras }}
       - name: Run command
         run: |
