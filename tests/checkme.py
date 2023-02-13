@@ -41,3 +41,18 @@ def used(do):
 
 def b():
     used(True)
+
+
+class MyClass:
+
+    @property
+    def some_attribute(self) -> bool:
+        return self._attribute
+
+    @some_attribute.setter
+    def some_attribute(self, value: bool) -> None:
+        self._atrribute = value
+
+    @decorator
+    def non_setter(self, value: bool) -> None:
+        ...
