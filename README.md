@@ -8,8 +8,8 @@ docs availabe at [readthedocs](https://flake8-boolean-trap.readthedocs.io/en/lat
 
 ### prerequisites
 
-* python>=3.7
-* flake8 >=4
+* python>=3.8
+
 
 ### install
 
