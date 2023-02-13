@@ -48,7 +48,8 @@ class BooleanTrapReason(Enum):
 
     FUNCTION_CALL = (
         "FBT003 do not use boolean positional args."
-        " Hint: in `{func}(..)`, refactor positional arg #{position} to include its argument name"
+        " Hint: in `{func}(..)`,"
+        " refactor positional arg #{position} to include its argument name"
     )
     """Function call uses boolean positional arg."""
 
