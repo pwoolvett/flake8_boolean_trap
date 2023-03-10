@@ -61,7 +61,7 @@ LintErrorGen = Generator[LintError, None, None]
 
 
 def positional_hints(func_node: ast.FunctionDef) -> CandidateGen:
-    """Extract type hints from postiional arguments.
+    """Extract type hints from positional arguments.
 
     Args:
         func_node: Function ast containing the arguments to search.
