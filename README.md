@@ -2,7 +2,7 @@
 
 A flake8 plugin to detect boolean traps.
 
-docs availabe at [readthedocs](https://flake8-boolean-trap.readthedocs.io/en/latest/)
+docs available at [readthedocs](https://flake8-boolean-trap.readthedocs.io/en/latest/)
 
 ## Setup
 
